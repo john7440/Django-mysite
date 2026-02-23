@@ -18,3 +18,21 @@
 7. Décocher actif
 
 ----------------------------------------------------------
+2.2.2 Exercice shell
+
+1. for q in Question.objects.all():
+    print(q.id, q.question_text, q.pub_date)
+
+2. for q in Question.objects.filter(pub_date__year=2026):
+    print(q.question_text, q.pub_date)
+
+3. q = Question.objects.get(pk=2)
+ 
+    print(q.id, q.question_text, q.pub_date)
+    for c in q.choice_set.all():
+        print(c.choice_text, c.votes)
+
+4. for q in Question.objects.all():
+    print(f"Question {q.id}: {q.question_text}")
+    for c in q.choice_set.all():
+        print(f"  - {c.choice_text}")
