@@ -36,3 +36,15 @@
     print(f"Question {q.id}: {q.question_text}")
     for c in q.choice_set.all():
         print(f"  - {c.choice_text}")
+
+5. for q in Question.objects.all():
+    print(f"{q.question_text} : {q.choice_set.count()} choix")
+
+7. for q in Question.objects.order_by('-pub_date'):
+    print(q.pub_date, q.question_text)
+
+
+9.  from django.utils import timezone
+    q = Question(question_text="Quelle est ta couleur préférée ?", pub_date=timezone.now())
+    q.save()
+    print(q.id)
