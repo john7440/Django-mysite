@@ -48,3 +48,14 @@
     q = Question(question_text="Quelle est ta couleur préférée ?", pub_date=timezone.now())
     q.save()
     print(q.id)
+
+10. q.choice_set.create(choice_text="Rouge", votes=0)
+    q.choice_set.create(choice_text="Bleu", votes=0)
+    q.choice_set.create(choice_text="Vert", votes=0)
+
+11. import datetime
+    from django.utils import timezone
+
+     recentes = Question.objects.filter(pub_date__gte=timezone.now() - datetime.timedelta(days=30))
+     for q in recentes:
+        print(q.question_text, q.pub_date)
