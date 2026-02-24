@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models.expressions import result
 from django.utils import timezone
 from django.db import models
 
@@ -21,6 +22,17 @@ class Question(models.Model):
     #Question 3 -afficher la date de la publication
     def age_with_date(self):
         return f"{self.question_text[:20]}: publié le {self.pub_date.strftime('%d/%m/%Y')}"
+
+    #Question4 -methode get_choices
+    def get_choices(self):
+        choices = self.choice_set.all()
+        total_votes = sum(c.votes for c in choices)
+        result = []
+        for c in choices:
+            proportion = (c.votes / total_votes * 100) if total_votes > 0 else 0
+            result.append((c.choice_text,c.votes, proportion))
+        return result
+
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
