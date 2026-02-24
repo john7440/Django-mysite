@@ -1,6 +1,5 @@
 import datetime
 
-from django.db.models.expressions import result
 from django.utils import timezone
 from django.db import models
 
@@ -8,7 +7,7 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
 
-    #ajout de (:20]  pour les 20 premiers caractères
+    #ajout de [:20] pour les 20 premiers caractères
     def __str__(self):
         return self.question_text[:20]
 

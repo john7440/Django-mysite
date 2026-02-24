@@ -198,3 +198,43 @@ for u in User.objects.all():
 1 admin admin@example.com True
 2 test user@example.com True
 ```
+
+---
+
+Exercice 2.2.3
+
+1.Sur le même modèle, ajoutez une méthode nommée age() qui calcule l'âge de la question:
+
+```bash
+print(q.age())
+```
+
+- Resultat:
+```text
+187 days, 23:37:43.256111
+```
+---
+
+2.Vous avez remarqué dans l'exercice précédent que l'affichage d'un objet des classes 
+Question ou Choix affichait les valeurs des attributs question_text ou choice_text. 
+Or ces valeurs peuvent être très longues (max_length=200), ce qui peut encombrer l'affichage. 
+Modifiez ces classes pour n'afficher que les 20 premiers caractères de ces attributs
+
+```bash
+print(q)
+```
+- Résultat:
+```text
+Peut on voyager dans
+```
+
+---
+3.Modifiez la classe Question pour ajouter l'affichage de la date de publication lors de l'affichage d'une de ces instances
+
+```bash
+print(q.age_with_date())
+```
+- Resultat:
+```text
+Peut on voyager dans: publié le 20/08/2025
+```
