@@ -4,7 +4,7 @@
 
 2. Fait
 
-3. Voyez-vous tous les attributs de vos classes ? Oui si on clique
+3. Voyez-vous tous les attributs de vos classes ? Non
    Pouvez-vous filtrer vos données suivants tous les attributs ? Non
    Pouvez-vous trier vos données suivants tous les attributs ? Non 
    Pouvez-vous chercher un contenu parmi tous les champs ? Non
