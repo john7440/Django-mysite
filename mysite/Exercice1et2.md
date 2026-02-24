@@ -13,7 +13,7 @@
  .2
  .3 Implémentation dans polls/admin.py   
 
-5.Non
+5. Non
 6. Fait en cochant le statut d'équipe
 7. Décocher actif
 
@@ -169,9 +169,7 @@ q.choice_set.create(choice_text="Vert", votes=0)
 11. Listez les questions publiées récemment
 - Query:
 ```bash
-import datetime
-from django.utils import timezone
-recentes = Question.objects.filter(pub_date__gte=timezone.now() - datetime.timedelta(days=30))
+recentes = [q for q in Question.objects.all() if q.was_published_recently()]
 for q in recentes:
     print(q.question_text, q.pub_date)
 ```
@@ -182,7 +180,7 @@ Quel projet Théo va-t-il choisir? 2026-02-23 14:00:00+00:00
 Quelle langue est parlé en Australie? 2026-02-28 12:33:14+00:00
 Qui est le président des Etats-Unis? 2026-03-20 14:00:00+00:00
 La terre est-elle plate? 2026-05-21 16:00:00+00:00
-Quelle est ta couleure préférée? 2026-02-23 14:06:38.249899+00:00
+Quelle est ta couleur préférée? 2026-02-23 14:06:38.249899+00:00
 ```
 ---
 
