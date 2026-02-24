@@ -18,6 +18,10 @@ class Question(models.Model):
     def age(self):
         return timezone.now() - self.pub_date
 
+    #Question 3 -afficher la date de la publication
+    def age_with_date(self):
+        return f"{self.question_text[:20]}: publié le {self.pub_date.strftime('%d/%m/%Y')}"
+
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
