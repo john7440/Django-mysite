@@ -29,8 +29,16 @@ class Question(models.Model):
         result = []
         for c in choices:
             proportion = (c.votes / total_votes * 100) if total_votes > 0 else 0
-            result.append((c.choice_text,c.votes, proportion))
+            result.append((c.choice_text,c.votes, round(proportion,2)))
         return result
+
+    #Q5
+    def get_max_choice(self):
+        choices = self.choice_set.all()
+        total_votes = sum(c.votes for c in choices)
+        best = max(choices, key=lambda c: c.votes)
+        proportion = (best.votes / total_votes * 100) if total_votes > 0 else 0
+        return (best.choice_text, best.votes, round(proportion, 2))
 
 
 class Choice(models.Model):

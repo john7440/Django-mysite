@@ -144,6 +144,15 @@ for q in Question.objects.order_by('-pub_date'):
 2025-08-20 11:19:04+00:00 Peut on voyager dans le future?
 ```
 ---
+8.[optionnel] Cherchez toutes les questions dont un mot est présent dans le texte de ses choix, 
+en utilisant la recherche contains. Essayer d'utiliser Recherches traversant les relations pour 
+obtenir une solution la plus synthétique possible
+- Query
+```bash
+Question.objects.filter(choice__choice_text__contains='Formidable')
+```
+
+
 9. Créez une question en utilisant le shell
 - Query:
 ```bash
