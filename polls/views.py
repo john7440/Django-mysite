@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect  # type: ign
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from django.views.generic import TemplateView
+
 
 from polls.models import Question, Choice
 
