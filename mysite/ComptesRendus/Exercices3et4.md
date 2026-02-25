@@ -21,13 +21,16 @@ Quel projet Théo va-t-il choisir? - Publié le 23/02/2026
 
 J'ai d'abord ajouté dans `polls/views.py`:
 ```bash
-def all_questions(request):
-    questions = Question.objects.order_by('id')
-    return render(request, 'polls/all.html', {'questions': questions})
+class AllQuestionsView(generic.ListView):
+    template_name = 'polls/all.html'
+    context_object_name = 'questions'
+
+    def get_queryset(self):
+        return Question.objects.order_by('id')
 ```
 Puis j'ai ajouté la route dans `polls/ulrs.py`:
 ```bash
-path('all/', views.all_questions, name='all')
+path('all/', views.AllQuestionView.as_view(), name='all')
 ```
 Et enfin, j'ai créé un nouveau template `all.html`:
 ```bash
@@ -64,17 +67,18 @@ et mettre son résultat dans une variable de gabarit ; s'aider également de Var
 
 Tout d'abord, j'ai ajouté une nouvelle vue dans `polls/veiws.py`:
 ```bash
-def frequency(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    choices = question.get_choices()
-    return render(request, 'polls/frequency.html', {
-        'question': question,
-        'choices': choices
-    })
+class FrequencyView(generic.DetailView):
+    model = Question
+    template_name = 'polls/frequency.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['choices'] = self.object.get_choices()
+        return context
 ```
 Puis ajout de la route dans `polls/urls.py`:
 ```bash
-path('<int:question_id>/frequency/', views.frequency, name='frequency')
+path('<int:pk>/frequency/', views.FrequencyView.as_view(), name='frequency')
 ```
 Et l'ajout du template `polls/frequency.html`:
 ```bash
@@ -107,21 +111,21 @@ Note: je ne traite pas les optionnelles dans cette partie!
 
 La première étape, la vue dans `polls/views.py`:
 ```bash
-def statistics(request):
-    from polls.models import Question, Choice
-    nb_questions = Question.objects.count()
-    nb_choices = Choice.objects.count()
-    total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
-    mean = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
-    last_question = Question.objects.order_by('-pub_date')[0]
+class StatisticsView(generic.TemplateView):
+    template_name = 'polls/statistics.html'
 
-    return render(request, 'polls/statistics.html',{
-        'nb_questions': nb_questions,
-        'nb_choices': nb_choices,
-        'total_votes': total_votes,
-        'mean': mean,
-        'last_question': last_question,
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        nb_questions = Question.objects.count()
+        nb_choices = Choice.objects.count()
+        total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
+
+        context['nb_questions'] = nb_questions
+        context['nb_choices'] = nb_choices
+        context['total_votes'] = total_votes
+        context['mean'] = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
+        context['last_question'] = Question.objects.order_by('-pub_date').first()
+        return context
 ```
 Puis la route dans `polls/urls.py`:
 ```bash
@@ -164,11 +168,9 @@ def get_least_popular(cls):
 Puis, mise a jour de la vue statistics dans `polls/views.py`:
 ```bash
 ...
-most_popular = Question.get_most_popular()
-least_popular = Question.get_leaqst_popular()
+context['most_popular'] = Question.get_most_popular()
+context['least_popular'] = Question.get_least_popular()
 ...
-'most_popular': most_popular,
-'least_popular': least_popular,
 ```
 Et enfin, la mise a jour du html `templates/polls/statisitics.html`:
 ```bash
@@ -247,6 +249,7 @@ en prévoyant 5 champs de saisie de choix, seuls les n premiers champs saisis (n
 
 Tout d'abord on ajoute les choix dans la classe QuestionForm dans `polls/forms.py`:
 ```bash
+...
 choice_1 = forms.CharField(max_length=200, required=False, label='Choix 1')
 choice_2 = forms.CharField(max_length=200, required=False, label='Choix 2')
 choice_3 = forms.CharField(max_length=200, required=False, label='Choix 3')
