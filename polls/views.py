@@ -30,10 +30,14 @@ class AllQuestionsView(generic.ListView):
     def get_queryset(self):
         return Question.objects.order_by('id')
 
-def frequency(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    choices = question.get_choices()
-    return render(request, 'polls/frequency.html', {'question': question, 'choices': choices})
+class FrequencyView(generic.DetailView):
+    model = Question
+    template_name = 'polls/frequency.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['choices'] = self.object.get_choices()
+        return context
 
 def statistics(request):
     from polls.models import Question, Choice
