@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
+from django.views.generic import FormView
 
 from polls.forms import QuestionForm
 from polls.models import Question, Choice
@@ -79,19 +80,16 @@ def vote(request, question_id):
 """
 utilisation de commit = False pour ne pas sauvegarder en bdd immédiatement
 """
-def add_question(request):
-    if request.method == "POST":
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.pub_date = timezone.now()
-            question.save()
-            choices = [form.cleaned_data.get(f"choice_{i}") for i in range(1,6)]
-            for choice_text in choices:
-                if choice_text:
-                    question.choice_set.create(choice_text=choice_text, votes=0)
-            return redirect('polls:all')
-    else:
-        form = QuestionForm()
+class AddQuestionView(FormView):
+    template_name = 'polls/add.html'
+    form_class = QuestionForm
 
-    return render(request, 'polls/add.html', {'form': form})
+    def form_valid(self, form):
+        question = form.save(commit=False)
+        question.pub_date = timezone.now()
+        question.save()
+        choices = [form.cleaned_data.get(f'choice_{i}') for i in range(1, 6)]
+        for choice_text in choices:
+            if choice_text:
+                question.choice_set.create(choice_text=choice_text, votes=0)
+        return redirect('polls:all')

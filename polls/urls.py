@@ -10,5 +10,5 @@ urlpatterns = [
     path('all/', views.AllQuestionsView.as_view(), name='all'),
     path('<int:pk>/frequency/', views.FrequencyView.as_view(), name='frequency'),
     path('statistics/', views.StatisticsView.as_view(), name='statistics'),
-    path('add/', views.add_question, name= 'add'),
+    path('add/', views.AddQuestionView.as_view(), name= 'add'),
 ]
