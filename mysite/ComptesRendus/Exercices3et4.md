@@ -239,3 +239,28 @@ Et enfin l'ajout d'un lien vers le formulaire dans `index.hytml`:
 <a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
 ```
 ---
+
+#### Question 6:
+[optionnel] enrichissez le pour permettre de saisir les choix possibles de façon simplifiée, 
+en prévoyant 5 champs de saisie de choix, seuls les n premiers champs saisis (non vide) 
+étant alors pris en compte comme choix de la question
+
+Tout d'abord on ajoute les choix dans la classe QuestionForm dans `polls/forms.py`:
+```bash
+choice_1 = forms.CharField(max_length=200, required=False, label='Choix 1')
+choice_2 = forms.CharField(max_length=200, required=False, label='Choix 2')
+choice_3 = forms.CharField(max_length=200, required=False, label='Choix 3')
+choice_4 = forms.CharField(max_length=200, required=False, label='Choix 4')
+choice_5 = forms.CharField(max_length=200, required=False, label='Choix 5')
+...
+```
+Puis on met a jour la vue add_question pour récuperer les choix `polls/views.py`;
+```bash
+...
+choices = [ form.cleaned_data.get(f'choice_{i}') for i in range (1,6)]
+for choice_text in choices:
+    if choice_text:
+        question.choice_set.create(choice_text=choice_text, votes =0)
+...
+```
+---
