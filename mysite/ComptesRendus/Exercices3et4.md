@@ -54,3 +54,43 @@ Tous les sondages
 ```
 
 ---
+#### Question 3:
+Dans cette même page http://127.0.0.1:8000/polls/all/, modifier le lien porté par chaque question pour aboutir 
+à une page du type http://127.0.0.1:8000/polls/1/frequency/ affichant les résultats du sondage en valeur absolue 
+et en pourcentage plutôt que le formulaire de vote. 
+Indice : utiliser la méthode get_choices() de la classe de modèle Question – optionnellement précédemment réalisée –, 
+et mettre son résultat dans une variable de gabarit ; s'aider également de Variables pour voir comment accéder 
+à un élément d'une variable de gabarit qui est un tuple (ou une liste)
+
+Tout d'abord, j'ai ajouté une nouvelle vue dans `polls/veiws.py`:
+```bash
+def frequency(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.get_choices()
+    return render(request, 'polls/frequency.html', {
+        'question': question,
+        'choices': choices
+    })
+```
+Puis ajout de la route dans `polls/urls.py`:
+```bash
+path('<int:question_id>/frequency/', views.frequency, name='frequency')
+```
+Et l'ajout du template `polls/frequency.html`:
+```bash
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in choices %}
+    <li>{{ choice.0 }} — {{ choice.1 }} vote(s) ({{ choice.2 }}%)</li>
+{% endfor %}
+</ul>
+```
+Résultat (avec question 2): 
+```text
+Peut on voyager dans le future?
+Peut-être - 2 votes (66,67%)
+Oui - 1 votes (33,33%)
+Non - 0 votes (0,0%)
+```
+--- 
+

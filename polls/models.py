@@ -30,6 +30,7 @@ class Question(models.Model):
         for c in choices:
             proportion = (c.votes / total_votes * 100) if total_votes > 0 else 0
             result.append((c.choice_text,c.votes, round(proportion,2)))
+        result.sort(key=lambda x: x[1], reverse=True)
         return result
 
     #Q5

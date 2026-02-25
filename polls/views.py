@@ -26,6 +26,11 @@ def all_questions(request):
     questions = Question.objects.order_by('id')
     return render(request, 'polls/all.html', {'questions': questions})
 
+def frequency(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.get_choices()
+    return render(request, 'polls/frequency.html', {'question': question, 'choices': choices})
+
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
