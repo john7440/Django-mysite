@@ -9,7 +9,7 @@ class Question(models.Model):
 
     #ajout de [:20] pour les 20 premiers caractères
     def __str__(self):
-        return self.question_text[:20]
+        return self.question_text[:30]
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
@@ -48,4 +48,4 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.choice_text[:20]
+        return self.choice_text[:30]

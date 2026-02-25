@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Sum
 from django.http import HttpResponse, Http404, HttpResponseRedirect  # type: ignore
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -30,6 +30,23 @@ def frequency(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     choices = question.get_choices()
     return render(request, 'polls/frequency.html', {'question': question, 'choices': choices})
+
+def statistics(request):
+    from polls.models import Question, Choice
+    nb_questions = Question.objects.count()
+    nb_choices = Choice.objects.count()
+    total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
+    mean = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
+    last_question = Question.objects.order_by('-pub_date')[0]
+
+    return render(request, 'polls/statistics.html',{
+        'nb_questions': nb_questions,
+        'nb_choices': nb_choices,
+        'total_votes': total_votes,
+        'mean': mean,
+        'last_question': last_question,
+    })
+
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

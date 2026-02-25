@@ -93,4 +93,58 @@ Oui - 1 votes (33,33%)
 Non - 0 votes (0,0%)
 ```
 --- 
+### Question 4:
+4. ajoutez une page de statistiques http://127.0.0.1:8000/polls/statistics/ affichant :
+- le nombre total de sondage enregistrés
+- le nombre total de choix possibles
+- le nombre total de votes – Indice : s'aider de Agrégation > fonction Sum
+- la moyenne du nombre de votes par sondage
+- [optionnel] la question la plus populaire (ayant reçu le plus de votes) – écrire une méthode de classe pour effectuer ce calcul ainsi que celui qui suit
+- [optionnel] la question la moins populaire (ayant reçu le moins de votes)
+- la dernière question enregistrée – Indice : s'aider de Agrégation > fonction Max
 
+Note: je ne traite pas les optionnelles dans cette partie!
+
+La première étape, la vue dans `polls/views.py`:
+```bash
+def statistics(request):
+    from polls.models import Question, Choice
+    nb_questions = Question.objects.count()
+    nb_choices = Choice.objects.count()
+    total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
+    mean = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
+    last_question = Question.objects.order_by('-pub_date')[0]
+
+    return render(request, 'polls/statistics.html',{
+        'nb_questions': nb_questions,
+        'nb_choices': nb_choices,
+        'total_votes': total_votes,
+        'mean': mean,
+        'last_question': last_question,
+    })
+```
+Puis la route dans `polls/urls.py`:
+```bash
+path('statistics/', views.statistics, name='statistics')
+```
+Et le template `polls/statistics.html`:
+```bash
+<h1>Statistiques</h1>
+<ul>
+    <li>Nombre de sondages : {{ nb_questions }}</li>
+    <li>Nombre de choix : {{ nb_choices }}</li>
+    <li>Nombre total de votes : {{ total_votes }}</li>
+    <li>Moyenne de votes par sondage : {{ moyenne }}</li>
+    <li>Dernière question : {{ derniere }}</li>
+</ul>
+```
+
+Résultat:
+```text
+Statistiques
+Nombre de sondages: 7
+Nombre de choix: 20
+Nombre total de votes: 9
+Moyenne de vote par sondage: 1,29
+Derniere question: La terre est-elle plate?
+``` 
