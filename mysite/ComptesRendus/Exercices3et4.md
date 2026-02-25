@@ -210,21 +210,19 @@ class QuestionForm(forms.ModelForm):
 ```
 Puis ajout de la vue dans `views.py`:
 ```bash
-def add_question(request):
-    if request.method == 'POST':
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.pub_date = timezone.now()
-            question.save()
-            return redirect('polls:all') 
-    else:
-        form = QuestionForm()
-    return render(request, 'polls/add.html', {'form': form})
+class AddQuestionView(FormView):
+    template_name = 'polls/add.html'
+    form_class = QuestionForm
+
+    def form_valid(self, form):
+        question = form.save(commit=False)
+        question.pub_date = timezone.now()
+        question.save()
+        return redirect('polls:all')
 ```
 La route dans `polls/urls.py`:
 ```bash
-path('add/', views.add_question, name= 'add')
+path('add/', views.AddQuestionView.as_view(), name= 'add')
 ```
 la création du template `templates/polls/add.html`:
 ```bash
@@ -260,10 +258,10 @@ choice_5 = forms.CharField(max_length=200, required=False, label='Choix 5')
 Puis on met a jour la vue add_question pour récuperer les choix `polls/views.py`;
 ```bash
 ...
-choices = [ form.cleaned_data.get(f'choice_{i}') for i in range (1,6)]
+choices = [form.cleaned_data.get(f'choice_{i}') for i in range(1, 6)]
 for choice_text in choices:
     if choice_text:
-        question.choice_set.create(choice_text=choice_text, votes =0)
+        question.choice_set.create(choice_text=choice_text, votes=0)
 ...
 ```
 ---
