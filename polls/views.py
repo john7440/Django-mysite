@@ -1,10 +1,11 @@
 from django.db.models import F, Sum
-from django.http import HttpResponse, Http404, HttpResponseRedirect  # type: ignore
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 
-
+from polls.forms import QuestionForm
 from polls.models import Question, Choice
 
 class IndexView(generic.ListView):
@@ -70,3 +71,19 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button
         return HttpResponseRedirect(reverse("polls:results", args=(question_id,)))
+
+"""
+utilisation de commit = False pour ne pas sauvegarder en bdd immédiatement
+"""
+def add_question(request):
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.pub_date = timezone.now()
+            question.save()
+            return redirect('polls:all')
+    else:
+        form = QuestionForm()
+
+    return render(request, 'polls/add.html', {'form': form})
