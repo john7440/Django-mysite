@@ -82,6 +82,10 @@ def add_question(request):
             question = form.save(commit=False)
             question.pub_date = timezone.now()
             question.save()
+            choices = [form.cleaned_data.get(f"choice_{i}") for i in range(1,6)]
+            for choice_text in choices:
+                if choice_text:
+                    question.choice_set.create(choice_text=choice_text, votes=0)
             return redirect('polls:all')
     else:
         form = QuestionForm()
