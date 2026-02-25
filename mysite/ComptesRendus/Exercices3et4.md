@@ -190,3 +190,52 @@ Question la plus populaire: Peut on voyager dans le future?
 Question la moins populaire: Quel projet Théo va-t-il choisir?
 ```
 ---
+#### Question 5:
+[optionnel] ajoutez un formulaire – accessible par un lien depuis la page http://127.0.0.1:8000/polls/ – 
+qui permette de créer une question
+
+Création d'un nouveau fichier `polls/forms.py`:
+```bash
+from django import forms
+from .models import Question
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['question_text', 'pub_date']
+        labels = {'question_text': 'Question', 'pub_date': 'Date de publication'}
+        widgets = {'pub_date': forms.DateTimeInput(attrs={'type':'datetime-local'}),}
+```
+Puis ajout de la vue dans `views.py`:
+```bash
+def add_question(request):
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.pub_date = timezone.now()
+            question.save()
+            return redirect('polls:all') 
+    else:
+        form = QuestionForm()
+    return render(request, 'polls/add.html', {'form': form})
+```
+La route dans `polls/urls.py`:
+```bash
+path('add/', views.add_question, name= 'add')
+```
+la création du template `templates/polls/add.html`:
+```bash
+<h1>Ajouter un sondage</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">créer la question</button>
+</form>
+<a href="{% url 'polls:all' %}">Retour a la liste</a>
+```
+Et enfin l'ajout d'un lien vers le formulaire dans `index.hytml`:
+```bash
+<a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
+```
+---
