@@ -1,0 +1,11 @@
+<h1>Ajouter un sondage</h1>
+<!-- post = creation/modif-->
+<form method="post">
+    <!--note: le csrf est une protection contre les attaques csrf
+        sans le token django bloque le post avec erreur 403-->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Créer la question</button>
+</form>
+
+<a href="{% url 'polls:all' %}">Retour à la liste</a>
