@@ -39,26 +39,23 @@ class FrequencyView(generic.DetailView):
         context['choices'] = self.object.get_choices()
         return context
 
-def statistics(request):
-    from polls.models import Question, Choice
-    nb_questions = Question.objects.count()
-    nb_choices = Choice.objects.count()
-    total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
-    mean = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
-    last_question = Question.objects.order_by('-pub_date')[0]
-    most_popular = Question.get_most_popular()
-    least_popular = Question.get_least_popular()
+class StatisticsView(generic.TemplateView):
+    template_name = 'polls/statistics.html'
 
-    return render(request, 'polls/statistics.html',{
-        'nb_questions': nb_questions,
-        'nb_choices': nb_choices,
-        'total_votes': total_votes,
-        'mean': mean,
-        'last_question': last_question,
-        'most_popular': most_popular,
-        'least_popular': least_popular,
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        nb_questions = Question.objects.count()
+        nb_choices = Choice.objects.count()
+        total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
 
+        context['nb_questions'] = nb_questions
+        context['nb_choices'] = nb_choices
+        context['total_votes'] = total_votes
+        context['mean'] = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
+        context['last_question'] = Question.objects.order_by('-pub_date').first()
+        context['most_popular'] = Question.get_most_popular()
+        context['least_popular'] = Question.get_least_popular()
+        return context
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
