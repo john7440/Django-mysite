@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import Sum
 from django.utils import timezone
 from django.db import models
 
@@ -9,7 +10,7 @@ class Question(models.Model):
 
     #ajout de [:20] pour les 20 premiers caractères
     def __str__(self):
-        return self.question_text[:30]
+        return self.question_text[:50]
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
@@ -40,6 +41,15 @@ class Question(models.Model):
         best = max(choices, key=lambda c: c.votes)
         proportion = (best.votes / total_votes * 100) if total_votes > 0 else 0
         return (best.choice_text, best.votes, round(proportion, 2))
+
+    #Q4 exercice3.2
+    @classmethod
+    def get_most_popular(cls):
+        return cls.objects.annotate(total_votes=Sum('choice__votes')).order_by('-total_votes').first()
+
+    @classmethod
+    def get_least_popular(cls):
+        return cls.objects.annotate(total_votes=Sum('choice__votes')).order_by('total_votes').first()
 
 
 class Choice(models.Model):

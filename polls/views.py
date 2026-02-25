@@ -38,6 +38,8 @@ def statistics(request):
     total_votes = Choice.objects.aggregate(Sum('votes'))['votes__sum'] or 0
     mean = round(total_votes / nb_questions, 2) if nb_questions > 0 else 0
     last_question = Question.objects.order_by('-pub_date')[0]
+    most_popular = Question.get_most_popular()
+    least_popular = Question.get_least_popular()
 
     return render(request, 'polls/statistics.html',{
         'nb_questions': nb_questions,
@@ -45,6 +47,8 @@ def statistics(request):
         'total_votes': total_votes,
         'mean': mean,
         'last_question': last_question,
+        'most_popular': most_popular,
+        'least_popular': least_popular,
     })
 
 

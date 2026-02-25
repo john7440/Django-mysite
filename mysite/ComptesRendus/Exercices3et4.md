@@ -148,3 +148,45 @@ Nombre total de votes: 9
 Moyenne de vote par sondage: 1,29
 Derniere question: La terre est-elle plate?
 ``` 
+
+Questions optionnelles 5 et 6 (plus et moins populaire):
+
+D'abord ajout de méthode dans la class Question dans `polls/models.py`:
+```bash
+@classmethod
+def get_most_popular(cls):
+    return cls.objects.annotate(total_votes=Sum('choice__votes')).order_by('-total_votes').first()
+@classmethod
+def get_least_popular(cls):
+    return cls.objects.annotate(total_votes=Sum('choice__votes')).order_by('total_votes').first()
+```
+
+Puis, mise a jour de la vue statistics dans `polls/views.py`:
+```bash
+...
+most_popular = Question.get_most_popular()
+least_popular = Question.get_leaqst_popular()
+...
+'most_popular': most_popular,
+'least_popular': least_popular,
+```
+Et enfin, la mise a jour du html `templates/polls/statisitics.html`:
+```bash
+...
+<li>Question la plus populaire: {{ most_popular }}</li>
+<li>Question la moins populaire: {{ least_popular }}</li>
+...
+```
+
+Le résultat final:
+```text
+Statistiques
+Nombre de sondages: 7
+Nombre de choix: 20
+Nombre total de votes: 9
+Moyenne de vote par sondage: 1,29
+Derniere question: La terre est-elle plate?
+Question la plus populaire: Peut on voyager dans le future?
+Question la moins populaire: Quel projet Théo va-t-il choisir?
+```
+---
