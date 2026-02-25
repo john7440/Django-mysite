@@ -5,6 +5,7 @@
             - Publié le {{ question.pub_date|date:"d/m/Y" }}</li>
         </li>
     {% endfor %}
+        <a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
     </ul>
 {% else %}
     <p>No polls are available.</p>
