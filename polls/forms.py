@@ -9,6 +9,12 @@ la classe Meta sert a config le formulaire:
 - widget: afficher un calendrier
 """
 class QuestionForm(forms.ModelForm):
+    choice_1 = forms.CharField(max_length=200, required=False, label='Choix 1')
+    choice_2 = forms.CharField(max_length=200, required=False, label='Choix 2')
+    choice_3 = forms.CharField(max_length=200, required=False, label='Choix 3')
+    choice_4 = forms.CharField(max_length=200, required=False, label='Choix 4')
+    choice_5 = forms.CharField(max_length=200, required=False, label='Choix 5')
+
     class Meta:
         model = Question
         fields = ['question_text', 'pub_date']
