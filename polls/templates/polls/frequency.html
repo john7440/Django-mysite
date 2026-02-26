@@ -1,6 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Fréquences — {{ question.question_text }}{% endblock %}
+
+{% block main %}
 <h1>{{ question.question_text }}</h1>
 <ul>
-    {% for choice in choices %}
-    <li>{{ choice.0 }} - {{ choice.1}} votes ({{ choice.2 }}%)</li>
-    {% endfor %}
+{% for choice in choices %}
+    <li>{{ choice.0 }} — {{ choice.1 }} vote(s) ({{ choice.2 }}%)</li>
+{% endfor %}
 </ul>
+<a href="{% url 'polls:all' %}">Retour au menu</a>
+{% endblock %}
