@@ -85,7 +85,7 @@ def vote(request, question_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button
-        return HttpResponseRedirect(reverse("polls:results", args=(question_id,)))
+        return HttpResponseRedirect(reverse("polls:frequency", args=(question_id,)))
 
 """
 utilisation de commit = False pour ne pas sauvegarder en bdd immédiatement
