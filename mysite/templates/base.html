@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mon site de sondages{% endblock %}</title>
+</head>
+<body>
+
+    <header>
+        {% block header %}
+            <img src="{% static 'polls/images/background.jpg' %}" alt="Bandeau du site">
+        {% endblock %}
+    </header>
+
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

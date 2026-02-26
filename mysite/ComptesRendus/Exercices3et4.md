@@ -204,9 +204,9 @@ from .models import Question
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['question_text', 'pub_date']
-        labels = {'question_text': 'Question', 'pub_date': 'Date de publication'}
-        widgets = {'pub_date': forms.DateTimeInput(attrs={'type':'datetime-local'}),}
+        fields = ['question_text',]
+        labels = {'question_text': 'Question',}
+        
 ```
 Puis ajout de la vue dans `views.py`:
 ```bash
