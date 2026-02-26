@@ -1,11 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un sondage{% endblock %}
+
+{% block header %}
+    <img src="{% static 'polls/images/add_banner.jpg' %}" alt="Ajouter un sondage">
+{% endblock %}
+
+{% block main %}
 <h1>Ajouter un sondage</h1>
-<!-- post = creation/modif-->
 <form method="post">
-    <!--note: le csrf est une protection contre les attaques csrf
-        sans le token django bloque le post avec erreur 403-->
     {% csrf_token %}
-    {{ form.as_p }}
+    <p>{{ form.question_text.label }} : {{ form.question_text }}</p>
+    <h4>Choix (laissez vide les choix non utilisés)</h4>
+    <p>{{ form.choice_1.label }} : {{ form.choice_1 }}</p>
+    <p>{{ form.choice_2.label }} : {{ form.choice_2 }}</p>
+    <p>{{ form.choice_3.label }} : {{ form.choice_3 }}</p>
+    <p>{{ form.choice_4.label }} : {{ form.choice_4 }}</p>
+    <p>{{ form.choice_5.label }} : {{ form.choice_5 }}</p>
     <button type="submit">Créer la question</button>
 </form>
-
 <a href="{% url 'polls:all' %}">Retour à la liste</a>
+{% endblock %}
