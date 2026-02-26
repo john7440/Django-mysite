@@ -1,10 +1,50 @@
 import datetime
 
+from django.urls import reverse
 from django.utils import timezone
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from .models import Question
 
+#---------------------test formulaire ajout---------------------
+class AddQuestionViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse('polls:add')
+
+    #affichage correct de la page
+    def test_get_form(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'polls/add.html')
+        self.assertContains(response, '<form')
+
+    #créeer une question sans choix
+    def test_question_only(self):
+        response = self.client.get(self.url, {'question_text': 'Question de test ?',})
+        self.assertRedirects(response,reverse('polls:all'))
+        self.assertEqual(Question.objects.count(), 1)
+        self.assertEqual(Question.objects.first().question_text, 'Question de test ?')
+
+    #test cration avec 3 choix
+    def test_post_question_with_choices(self):
+        response = self.client.post(self.url, {
+            'question_text': 'Couleur préférée ?',
+            'choice_1': 'Rouge',
+            'choice_2': 'Bleu',
+            'choice_3': 'Vert',
+            'choice_4': '',
+            'choice_5': '',
+        })
+
+        question = Question.objects.first()
+        self.assertEqual(question.choice_set.count(), 3)
+        textes = list(question.choice_set.values_list('choice_text', flat=True))
+        self.assertIn('Rouge', textes)
+        self.assertIn('Bleu', textes)
+        self.assertIn('Vert', textes)
+
+#----------------Test Questions-------------------------
 class QuestionModelTests(TestCase):
 
     def test_was_published_recently_with_future_question(self):
