@@ -1,16 +1,20 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+{% block title %}Sondages récents{% endblock %}
 
+{% block main %}
+<h1>Sondages récents</h1>
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-            - Publié le {{ question.pub_date|date:"d/m/Y" }}</li>
+        <li>
+            <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+            — Publiée le {{ question.pub_date|date:"d/m/Y" }}
         </li>
     {% endfor %}
-        <a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>Aucun sondage disponible.</p>
 {% endif %}
+<a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
+{% endblock %}
