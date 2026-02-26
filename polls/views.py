@@ -44,7 +44,7 @@ class AllQuestionsView(generic.ListView):
 class FrequencyView(generic.DetailView):
     model = Question
     template_name = 'polls/frequency.html'
-
+        #Note: **kwargs pour capturer les params non connus a l'avance
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['choices'] = self.object.get_choices()
