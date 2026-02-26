@@ -1,10 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block main %}
 <h1>Statistiques</h1>
 <ul>
-    <li>Nombre de sondages: {{ nb_questions }}</li>
-    <li>Nombre de choix: {{ nb_choices }}</li>
-    <li>Nombre total de votes: {{ total_votes }}</li>
-    <li>Moyenne de vote par sondage: {{ mean }}</li>
-    <li>Derniere question: {{ last_question }}</li>
-    <li>Question la plus populaire: {{ most_popular }}</li>
-    <li>Question la moins populaire: {{ least_popular }}</li>
+    <li>Nombre de sondages : {{ nb_questions }}</li>
+    <li>Nombre de choix : {{ nb_choices }}</li>
+    <li>Nombre total de votes : {{ total_votes }}</li>
+    <li>Moyenne de votes par sondage : {{ mean }}</li>
+    <li>Dernière question : {{ last_question }}</li>
+    <li>Question la plus populaire : {{ most_popular }} ({{ most_popular.total_votes }} votes)</li>
+    <li>Question la moins populaire : {{ least_popular }} ({{ least_popular.total_votes }} votes)</li>
 </ul>
+<a href="{% url 'polls:all' %}">Retour au menu</a>
+{% endblock %}
