@@ -1,24 +1,46 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Ajouter un sondage{% endblock %}
 
 {% block header %}
-    <img src="{% static 'polls/images/add_banner.jpg' %}" alt="Ajouter un sondage">
 {% endblock %}
 
 {% block main %}
-<h1>Ajouter un sondage</h1>
-<form method="post">
-    {% csrf_token %}
-    <p>{{ form.question_text.label }} : {{ form.question_text }}</p>
-    <h4>Choix (laissez vide les choix non utilisés)</h4>
-    <p>{{ form.choice_1.label }} : {{ form.choice_1 }}</p>
-    <p>{{ form.choice_2.label }} : {{ form.choice_2 }}</p>
-    <p>{{ form.choice_3.label }} : {{ form.choice_3 }}</p>
-    <p>{{ form.choice_4.label }} : {{ form.choice_4 }}</p>
-    <p>{{ form.choice_5.label }} : {{ form.choice_5 }}</p>
-    <button type="submit">Créer la question</button>
-</form>
-<a href="{% url 'polls:all' %}">Retour à la liste</a>
+<div class="card mx-auto" style="max-width:600px">
+    <div class="card-header p-3"><h1 class="text-center">Nouveau sondage</h1></div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.question_text.label }}</label>
+                <div>{{ form.question_text }}</div>
+            </div>
+            <h6 class="mt-4 mb-2 text-muted text-center">Choix (laissez vide les champs non utilisés)</h6>
+            {% for i in "12345" %}
+            <div class="mb-2">
+                <div>{{ form|dictsort:i }}</div>
+            </div>
+            {% endfor %}
+            <div class="mb-2">
+                <label class="form-label">Choix 1</label>{{ form.choice_1 }}
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Choix 2</label>{{ form.choice_2 }}
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Choix 3</label>{{ form.choice_3 }}
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Choix 4</label>{{ form.choice_4 }}
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Choix 5</label>{{ form.choice_5 }}
+            </div>
+            <button type="submit" class="btn btn-success mt-3 w-100">Créer le sondage</button>
+        </form>
+    </div>
+</div>
+<div class="text-center mt-3">
+    <a href="{% url 'polls:all' %}" class="text-decoration-none">Retour à la liste</a>
+</div>
 {% endblock %}
