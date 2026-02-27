@@ -11,6 +11,17 @@
         {% block header %}
             <img src="{% static 'polls/images/background.jpg' %}" alt="Bandeau du site">
         {% endblock %}
+        <nav>
+            {% if user.is_authenticated %}
+                Connecté en tant que <strong>{{ user.username }}</strong>
+                <form method="post" action="{% url 'logout' %}" style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit">Se déconnecter</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Se connecter</a>
+            {% endif %}
+        </nav>
     </header>
 
     <main>

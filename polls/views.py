@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from django.views.generic import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from polls.forms import QuestionForm
 from polls.models import Question, Choice
@@ -90,9 +91,10 @@ def vote(request, question_id):
 """
 utilisation de commit = False pour ne pas sauvegarder en bdd immédiatement
 """
-class AddQuestionView(FormView):
+class AddQuestionView(LoginRequiredMixin,FormView):
     template_name = 'polls/add.html'
     form_class = QuestionForm
+    login_url = '/login/'
 
     def form_valid(self, form):
         question = form.save(commit=False)

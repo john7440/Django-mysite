@@ -16,5 +16,7 @@
 {% else %}
     <p>Aucun sondage disponible.</p>
 {% endif %}
-<a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
+{% if user.is_authenticated %}
+    <a href="{% url 'polls:add' %}">+ Ajouter un sondage</a>
+{% endif %}
 {% endblock %}
