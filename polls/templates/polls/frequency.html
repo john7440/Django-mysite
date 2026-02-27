@@ -1,13 +1,25 @@
 {% extends 'base.html' %}
-
 {% block title %}Fréquences — {{ question.question_text }}{% endblock %}
-
 {% block main %}
-<h1>{{ question.question_text }}</h1>
-<ul>
-{% for choice in choices %}
-    <li>{{ choice.0 }} — {{ choice.1 }} vote(s) ({{ choice.2 }}%)</li>
-{% endfor %}
-</ul>
-<a href="{% url 'polls:all' %}">Retour au menu</a>
+<div class="card mx-auto" style="max-width:600px">
+    <div class="card-header">{{ question.question_text }}</div>
+    <div class="card-body">
+        {% for choice in choices %}
+        <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+                <span>{{ choice.0 }}</span>
+                <span class="text-muted">{{ choice.1 }} vote(s) — {{ choice.2 }}%</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar bg-primary"
+                     style="width: {{ choice.2 }}%">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <a href="{% url 'polls:all' %}" class="btn btn-outline-secondary mt-3">Retour</a>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-outline-primary mt-3">Voter à nouveau</a>
+    </div>
+</div>
+
 {% endblock %}
