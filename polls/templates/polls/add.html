@@ -37,10 +37,11 @@
                 <label class="form-label">Choix 5</label>{{ form.choice_5 }}
             </div>
             <button type="submit" class="btn btn-success mt-3 w-100">Créer le sondage</button>
+            <div class="text-center mt-3">
+                <a href="{% url 'polls:all' %}" class="text-decoration-none">Retour à la liste</a>
+            </div>
         </form>
     </div>
 </div>
-<div class="text-center mt-3">
-    <a href="{% url 'polls:all' %}" class="text-decoration-none">Retour à la liste</a>
-</div>
+
 {% endblock %}

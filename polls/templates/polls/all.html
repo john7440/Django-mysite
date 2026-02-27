@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Tous les sondages{% endblock %}
 {% block main %}
-<h1 class="h3 mb-4">Tous les sondages</h1>
+<h1 class="h3 mb-4 text-center">Tous les sondages</h1>
 <div class="list-group">
 {% for question in questions %}
-    <a href="{% url 'polls:frequency' question.id %}"
+    <a href="{% url 'polls:detail' question.id %}"
        class="list-group-item list-group-item-action  d-flex justify-content-between align-items-center">
-        <span>{{ question.question_text }}</span>
-        <span class="badge bg-primary rounded-pill">Résultats</span>
+        <span>{{ question.question_text }}</span><span> {{ question.pub_date }}</span>
     </a>
 {% endfor %}
 </div>
-<a href="{% url 'polls:index' %}" class="btn btn-outline-secondary mt-3">Retour</a>
+<div class="d-flex justify-content-end mt-3">
+    <a href="{% url 'polls:index' %}" class="btn btn-outline-danger">Retour</a>
+</div>
 {% endblock %}

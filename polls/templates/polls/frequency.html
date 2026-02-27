@@ -17,8 +17,11 @@
             </div>
         </div>
         {% endfor %}
-        <a href="{% url 'polls:all' %}" class="btn btn-outline-secondary mt-3">Retour</a>
-        <a href="{% url 'polls:detail' question.id %}" class="btn btn-outline-primary mt-3">Voter à nouveau</a>
+        <div class="d-flex justify-content-end align-items-right m-3">
+            <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary m-2">Voter à nouveau</a>
+            <a href="{% url 'polls:index' %}" class="btn btn-outline-danger m-2">Retour</a>
+        </div>
+
     </div>
 </div>
 

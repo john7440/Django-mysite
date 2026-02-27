@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
-
 {% block title %}Résultats — {{ question.question_text }}{% endblock %}
-
 {% block main %}
-<h1>{{ question.question_text }}</h1>
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} — {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
-<a href="{% url 'polls:detail' question.id %}">Voter à nouveau</a>
+<div class="card mx-auto" style="max-width:600px">
+    <div class="card-header">{{ question.question_text }}</div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+        {% for choice in question.choice_set.all %}
+            <li class="list-group-item d-flex justify-content-between">
+                {{ choice.choice_text }}
+                <span class="badge bg-primary rounded-pill">
+                    {{ choice.votes }} vote{{ choice.votes|pluralize }}
+                </span>
+            </li>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-outline-primary mt-3">
+            Voter à nouveau
+        </a>
+    </div>
+</div>
 {% endblock %}

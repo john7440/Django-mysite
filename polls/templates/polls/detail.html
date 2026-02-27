@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}{{ question.question_text }}{% endblock %}
 {% block main %}
-<div class="card mx-auto" style="max-width:600px">
-    <div class="card-header">{{ question.question_text }}</div>
+<div class="card mx-auto" style="max-width:500px">
+    <div class="card-header text-center">{{ question.question_text }}</div>
     <div class="card-body">
         {% if error_message %}
             <div class="alert alert-danger">{{ error_message }}</div>
@@ -18,7 +18,10 @@
                 </label>
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary mt-3">Voter</button>
+            <div class="d-flex justify-content-end align-items-right m-3">
+                <button type="submit" class="btn btn-success m-2">Voter</button>
+                <a href="{% url 'polls:index' %}" class="btn btn-outline-danger m-2">Retour</a>
+            </div>
         </form>
     </div>
 </div>
