@@ -1,4 +1,5 @@
 import datetime
+from tracemalloc import Statistic
 
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -186,3 +187,23 @@ class VoteViewTests(TestCase):
            {'choice': choice.id}
        )
        self.assertRedirects(response, reverse('polls:frequency', args=(q.id,)))
+
+#-------------tests vue statistiques---------------
+class StatisticsViewTests(TestCase):
+    def test_statistics_count(self):
+        create_question("Stats ?", nb_choices=3)
+        response = self.client.get(reverse('polls:statistics'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['nb_questions'], 1)
+        self.assertEqual(response.context['nb_choices'], 3)
+
+    def test_statistics_total_votes(self):
+        create_question("Votes ?", nb_choices=3)
+        response = self.client.get(reverse('polls:statistics'))
+        self.assertEqual(response.context['total_votes'], 6)
+
+    def test_statistics_no_data(self):
+        response = self.client.get(reverse('polls:statistics'))
+        self.assertEqual(response.context['nb_questions'], 0)
+        self.assertEqual(response.context['total_votes'], 0)
+        self.assertEqual(response.context['mean'], 0)
