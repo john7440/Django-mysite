@@ -1,28 +1,39 @@
 {% extends 'base.html' %}
 {% block title %}Fréquences — {{ question.question_text }}{% endblock %}
 {% block main %}
-<div class="card mx-auto" style="max-width:600px">
-    <div class="card-header">{{ question.question_text }}</div>
-    <div class="card-body">
-        {% for choice in choices %}
-        <div class="mb-3">
-            <div class="d-flex justify-content-between mb-1">
-                <span>{{ choice.0 }}</span>
-                <span class="text-muted">{{ choice.1 }} vote(s) — {{ choice.2 }}%</span>
-            </div>
-            <div class="progress">
-                <div class="progress-bar bg-primary"
-                     style="width: {{ choice.2 }}%">
+<div class="d-flex justify-content-center align-items-center"
+     style="min-height: calc(100vh - 80px);">
+
+    <div class="card" style="width:560px; border-radius:16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+        <div class="card-header text-center py-3">
+            <h5 class="mb-0">{{ question.question_text }}</h5>
+        </div>
+        <div class="card-body px-4 py-4">
+            {% for choice in choices %}
+            <div class="mb-4">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-500">{{ choice.0 }}</span>
+                    <span class="text-muted">
+                        {{ choice.1 }} vote{{ choice.1|pluralize }} — {{ choice.2 }}%
+                    </span>
+                </div>
+                <div class="progress" style="height: 12px; border-radius: 8px;">
+                    <div class="progress-bar bg-primary"
+                         role="progressbar"
+                         style="width: {{ choice.2|floatformat:0 }}%;"
+                         aria-valuenow="{{ choice.2 }}"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        <div class="d-flex justify-content-end align-items-right m-3">
-            <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary m-2">Voter à nouveau</a>
-            <a href="{% url 'polls:index' %}" class="btn btn-outline-danger m-2">Retour</a>
+        <div class="card-footer d-flex justify-content-end bg-white"
+             style="border-radius: 0 0 16px 16px;">
+            <a href="{% url 'polls:all' %}" class="btn btn-outline-danger">Retour</a>
         </div>
-
     </div>
-</div>
 
+</div>
 {% endblock %}

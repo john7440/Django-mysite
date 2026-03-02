@@ -34,8 +34,8 @@ class Question(models.Model):
         total_votes = sum(c.votes for c in choices)
         result = []
         for c in choices:
-            proportion = (c.votes / total_votes * 100) if total_votes > 0 else 0
-            result.append((c.choice_text,c.votes, round(proportion,2)))
+            proportion = round((c.votes / total_votes * 100), 1) if total_votes > 0 else 0
+            result.append((c.choice_text,c.votes,proportion,2))
         result.sort(key=lambda x: x[1], reverse=True)
         return result
 
