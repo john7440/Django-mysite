@@ -9,6 +9,7 @@ Développé avec le Framework Django, c'est le tutoriel officiel avec quelques a
 - [Structure du projet](#structure-du-projet)
 - [Architecture du code](#architecture-du-code)
 - [Installation et utilisation](#installation-et-utilisation)
+- [Tests](#tests)
   
 
 ## Fonctionnalités
@@ -112,3 +113,19 @@ python manage.py runserver
 6. Acceder à l'application:
 - Site: http://127.0.0.1:8000/polls/
 - admin: http://127.0.0.1:8000/admin/
+
+## Tests
+Les tests automatisés:
+```bash
+# Lancer tous les tests
+python manage.py test polls
+```
+Les tests vérifient:
+- l'affichage correct du formulaire
+- la création d'une question sans choix
+- la création avec choix
+- le rejet d'un formulaire non valide
+- l'initialisation des votes à 0
+
+### Licence
+Projet réalisé à des fins pédagogiques dans le cadre d'une formation en développement web.
