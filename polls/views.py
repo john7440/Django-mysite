@@ -10,6 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from polls.forms import QuestionForm
 from polls.models import Question, Choice
 
+# ==============================================================================
+# Vue: page d'accueil
+# ==============================================================================
+
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
@@ -21,6 +25,10 @@ class IndexView(generic.ListView):
         """
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
+# ========================================================================
+# Vue: détail question
+# ========================================================================
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
@@ -31,9 +39,17 @@ class DetailView(generic.DetailView):
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+# ========================================================================
+# Vue resultat
+# ========================================================================
+
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+# ========================================================================
+# Vue: toutes les questions
+# ========================================================================
 
 class AllQuestionsView(generic.ListView):
     template_name = 'polls/all.html'
@@ -41,6 +57,10 @@ class AllQuestionsView(generic.ListView):
 
     def get_queryset(self):
         return Question.objects.order_by('question_text')
+
+# ========================================================================
+# Vue fréquence des votes
+# ========================================================================
 
 class FrequencyView(generic.DetailView):
     model = Question
@@ -51,6 +71,9 @@ class FrequencyView(generic.DetailView):
         context['choices'] = self.object.get_choices()
         return context
 
+# ========================================================================
+# Vue des stats globales
+# ========================================================================
 class StatisticsView(generic.TemplateView):
     template_name = 'polls/statistics.html'
 
@@ -68,6 +91,10 @@ class StatisticsView(generic.TemplateView):
         context['most_popular'] = Question.get_most_popular()
         context['least_popular'] = Question.get_least_popular()
         return context
+
+# ========================================================================
+# Vue fonctionnelle vote
+# ========================================================================
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -88,15 +115,17 @@ def vote(request, question_id):
         # user hits the Back button
         return HttpResponseRedirect(reverse("polls:frequency", args=(question_id,)))
 
-"""
-utilisation de commit = False pour ne pas sauvegarder en bdd immédiatement
-"""
+# ========================================================================
+# Vue ajout de question: avec protection auth
+# ========================================================================
+#note: LoginRequiredMix doit etre en 1er dans l'héritage
 class AddQuestionView(LoginRequiredMixin,FormView):
     template_name = 'polls/add.html'
     form_class = QuestionForm
     login_url = '/login/'
 
     def form_valid(self, form):
+        #note: coommit =False pour mettre l'objet en memoire sans le mettre en bdd
         question = form.save(commit=False)
         question.pub_date = timezone.now()
         question.save()
