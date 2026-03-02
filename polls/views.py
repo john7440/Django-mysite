@@ -118,14 +118,14 @@ def vote(request, question_id):
 # ========================================================================
 # Vue ajout de question: avec protection auth
 # ========================================================================
-#note: LoginRequiredMix doit etre en 1er dans l'héritage
+#note: LoginRequiredMix doit etre en 1er dans l'héritage!!!!!!!!!!!!!!!
 class AddQuestionView(LoginRequiredMixin,FormView):
     template_name = 'polls/add.html'
     form_class = QuestionForm
-    login_url = '/login/'
+    login_url = '/accounts/login/'
 
     def form_valid(self, form):
-        #note: coommit =False pour mettre l'objet en memoire sans le mettre en bdd
+        #note: commit =False pour mettre l'objet en memoire sans le mettre en bdd
         question = form.save(commit=False)
         question.pub_date = timezone.now()
         question.save()
