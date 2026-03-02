@@ -7,6 +7,8 @@ Développé avec le Framework Django, c'est le tutoriel officiel avec quelques a
 - [Fonctionnalités](#fonctionnalités)
 - [Technologies Utilisées](#technologies-utilisées)
 - [Structure du projet](#structure-du-projet)
+- [Architecture du code](#architecture-du-code)
+- [Installation et utilisation](#installation-et-utilisation)
   
 
 ## Fonctionnalités
@@ -73,3 +75,40 @@ DjangoTest/
 ├── manage.py
 └── README.md
 ``` 
+
+## Architecture du code
+
+Le code est structuré selon le pattern MVT (Modèle - Vue - Template) de Django :
+1. **models.py** : Définit les modèles Question et Choice avec leurs méthodes métier
+2. **views.py**: ensemble de vues Django
+3. **forms.py**: basé sur ModelForm avec 5 choix optionnelles
+4. **admin.py**: `QuestionAdmin`et `ChoiceAdmin`
+
+## Installation et Utilisation
+
+1. Cloner le projet
+```bash
+git clone https://github.com/john7440/Django-mysite.git
+cd Django-mysite
+```
+
+2. Créer et activer un environnement virtuel
+```bash
+python -m venv .venv
+source .venv/Scripts/activate  # Windows/Git Bash
+```
+3. Installer Django:
+```bash
+pip install django==5.2
+```
+4. appliquer les migrations:
+```bash
+python manage.py migrate
+```
+5. Lancer le serveur:
+```bash
+python manage.py runserver
+```
+6. Acceder à l'application:
+- Site: http://127.0.0.1:8000/polls/
+- admin: http://127.0.0.1:8000/admin/
