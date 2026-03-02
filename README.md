@@ -5,6 +5,10 @@ Développé avec le Framework Django, c'est le tutoriel officiel avec quelques a
 ## Sommaire
 
 - [Fonctionnalités](#fonctionnalités)
+- [Technologies Utilisées](#technologies-utilisées)
+  
+
+## Fonctionnalités
 
 #### Partie Utilisateur:
 - **Liste de sondages**: la liste des sondages récents avec la date de publication
@@ -20,3 +24,9 @@ Développé avec le Framework Django, c'est le tutoriel officiel avec quelques a
 - **Gestion des utilisateurs**: création, activation/desactivation de compte
 - **Authentification**: Connexion/deconnexion + restriction pour la création de sondage
  
+## Technologies Utilisées
+
+- **Python 3.14** & **Django 5.2**
+- **Bootstrap 5** : Interface responsive avec composants (cards, navbar, badges)
+- **CSS personnalisé** : fichier `style.css` pour personnalisation
+- **SQLite** : base de données par défaut fournie par Django
