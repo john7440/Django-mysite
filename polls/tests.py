@@ -122,6 +122,15 @@ class AddQuestionViewTest(TestCase):
         q = Question.objects.first()
         self.assertEqual(q.choice_set.count(), 3)
 
+    def test_choices_votes_initialized_to_zero(self):
+        self.client.post(self.url, {
+            'question_text': 'Votes 0 ?',
+            'choice_1': 'Oui',
+            'choice_2': 'Non',
+        })
+        for choice in Choice.objects.all():
+            self.assertEqual(choice.votes, 0)
+
 #----------------Test Questions-------------------------
 class QuestionModelTests(TestCase):
 
