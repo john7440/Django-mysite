@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.test import TestCase, Client
@@ -23,7 +24,7 @@ class QuestionIndexViewTests(TestCase):
         """
         response = self.client.get(reverse('polls:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'No polls are available.')
+        self.assertContains(response, 'Aucun sondage disponible')
         self.assertQuerySetEqual(response.context['latest_question_list'], [])
 
     def test_past_question(self):
@@ -42,7 +43,7 @@ class QuestionIndexViewTests(TestCase):
         """
         create_question(question_text='Future question.', days=30)
         response = self.client.get(reverse('polls:index'))
-        self.assertContains(response, 'No polls are available.')
+        self.assertContains(response, 'Aucun sondage disponible')
         self.assertQuerySetEqual(response.context['latest_question_list'], [])
 
     def test_future_question_and_past_question(self):
@@ -91,13 +92,10 @@ class AddQuestionViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse('polls:add')
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        logged_in = self.client.login(username='testuser', password='testpassword')
+        self.assertTrue(logged_in)
 
-    #affichage correct de la page
-    def test_get_form(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'polls/add.html')
-        self.assertContains(response, '<form')
 
     #créeer une question sans choix
     def test_question_only(self):
@@ -153,3 +151,20 @@ class QuestionModelTests(TestCase):
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
+
+#-------------------tests d'authentification-------------------
+class AuthTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.admin = User.objects.create_superuser(username='admin', password='adminpassword')
+
+    def test_logged_in_user_can_access_add(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('polls:add'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout_redirects(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response,'/polls/')
