@@ -6,7 +6,7 @@
 {% for question in questions %}
     <a href="{% url 'polls:detail' question.id %}"
        class="list-group-item list-group-item-action  d-flex justify-content-between align-items-center">
-        <span>{{ question.question_text }}</span><span> {{ question.pub_date }}</span>
+        <span>{{ question.question_text }}</span><span class="badge-date">{{ question.pub_date|date:"d/m/Y" }}</span>
     </a>
 {% endfor %}
 </div>
