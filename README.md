@@ -98,19 +98,23 @@ cd Django-mysite
 python -m venv .venv
 source .venv/Scripts/activate  # Windows/Git Bash
 ```
-3. Installer Django:
+3. Installer les dépendances:
 ```bash
-pip install django==5.2
+pip install -r requirements.txt
 ```
 4. appliquer les migrations:
 ```bash
 python manage.py migrate
 ```
-5. Lancer le serveur:
+5. Créer un super-utilisateur:
+```bash
+python manage.py createsuperuser
+```
+7. Lancer le serveur:
 ```bash
 python manage.py runserver
 ```
-6. Acceder à l'application:
+7. Acceder à l'application:
 - Site: http://127.0.0.1:8000/polls/
 - admin: http://127.0.0.1:8000/admin/
 
@@ -126,6 +130,10 @@ Les tests vérifient:
 - la création avec choix
 - le rejet d'un formulaire non valide
 - l'initialisation des votes à 0
+- l'authentification
+- l'incrémentation des votes
+- plusieurs redirections
+- la validité des statistiques
 
 ### Licence
 Projet réalisé à des fins pédagogiques dans le cadre d'une formation en développement web.
