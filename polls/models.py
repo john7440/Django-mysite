@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.utils import timezone
 from django.db import models
@@ -8,6 +9,11 @@ from django.db import models
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank= True,
+                               related_name='questions')
     @admin.display(boolean = True,
                    ordering='pub_date',
                    description='Published recently?')

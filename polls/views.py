@@ -1,11 +1,11 @@
 from django.db.models import F, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views import generic
-from django.views.generic import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import FormView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from polls.forms import QuestionForm
 from polls.models import Question, Choice
@@ -128,9 +128,23 @@ class AddQuestionView(LoginRequiredMixin,FormView):
         #note: commit =False pour mettre l'objet en memoire sans le mettre en bdd
         question = form.save(commit=False)
         question.pub_date = timezone.now()
+        question.author = self.request.user
         question.save()
         choices = [form.cleaned_data.get(f'choice_{i}') for i in range(1, 6)]
         for choice_text in choices:
             if choice_text:
                 question.choice_set.create(choice_text=choice_text, votes=0)
         return redirect('polls:all')
+
+# ========================================================================
+# Vue suppression sondage avec verification user
+# ========================================================================
+class DeleteQuestionView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Question
+    template_name = 'polls/delete_confirm.html'
+    success_url = reverse_lazy('polls:all')
+    login_url = '/accounts/login/'
+
+    def test_func(self):
+        question = self.get_object()
+        return self.request.user == question.author or self.request.user.is_superuser
