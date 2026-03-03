@@ -46,8 +46,7 @@ DjangoTest/
 │   ├── settings.py                  # Configuration du projet
 │   ├── urls.py                      # Routes principales
 │   ├── wsgi.py
-│   ├── asgi.py
-│   └── requirements.txt             # Les librairies utilisées
+│   └── asgi.py
 ├── polls/
 │   ├── static/
 │   │   └── polls/
@@ -73,6 +72,7 @@ DjangoTest/
 │   ├── base.html                    # Gabarit parent
 │   └── registration/
 │       └── login.html               # Page de connexion
+├── requirements.txt                 # Les librairies utilisées
 ├── manage.py
 └── README.md
 ``` 
