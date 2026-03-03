@@ -1,18 +1,58 @@
 {% extends 'base.html' %}
 {% block title %}Connexion{% endblock %}
 {% block main %}
-<div class="card mx-auto mt-5" style="max-width:400px">
-    <div class="card-header text-center">Connexion</div>
-    <div class="card-body justify-content-center text-center">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success w-100 mt-2">Se connecter</button>
-        </form>
-        <hr>
-        <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary w-100">
-            Continuer en tant que visiteur
-        </a>
+
+<!-- ajout Bootstrap icons -->
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 80px);>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <div class="card" style="width: 400px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+        <div class="card-header text-center py-3">
+            <h1 class="mb-0 fw-bold ">Connexion</h1>
+        </div>
+        <div class="card-body px-4 py-4">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold fs-4" for="id_username">
+                        <i class="bi bi-person-fill me-1"></i>Nom d'utilisateur
+                    </label>
+                    <input type="text"
+                           name="username"
+                           id="id_username"
+                           class="form-control"
+                           placeholder="Votre nom d'utilisateur"
+                           autofocus>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold fs-4" for="id_password">
+                        <i class="bi bi-lock-fill me-1"></i>Mot de passe
+                    </label>
+                    <input type="password"
+                           name="password"
+                           id="id_password"
+                           class="form-control"
+                           placeholder="Votre mot de passe">
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger py-2">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                        Nom d'utilisateur ou mot de passe incorrect!!!
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-success w-100 py-2">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Se connecter
+                </button>
+            </form>
+
+            <hr>
+
+            <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-eye me-1"></i>Continuer en tant que visiteur
+            </a>
+        </div>
     </div>
-</div>
 {% endblock %}

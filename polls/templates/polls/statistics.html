@@ -1,37 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}Statistiques{% endblock %}
 {% block main %}
-<h1 class="mb-4 text-center">Statistiques</h1>
+<h1 class="mb-4 text-center"><strong>Statistiques</strong></h1>
 
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
         <div class="card stat-card text-center">
-            <div class="stat-number fs-5 fw-bold">{{ nb_questions }}</div>
-            <div class="stat-label">Sondages</div>
+            <div class="stat-number fs-1 fw-bold">{{ nb_questions }}</div>
+            <div class="stat-label fs-4">Sondages</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card stat-card text-center">
-            <div class="stat-number fs-5 fw-bold">{{ nb_choices }}</div>
-            <div class="stat-label">Choix</div>
+            <div class="stat-number fs-1 fw-bold">{{ nb_choices }}</div>
+            <div class="stat-label fs-4">Choix</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card stat-card text-center">
-            <div class="stat-number fs-5 fw-bold">{{ total_votes }}</div>
-            <div class="stat-label">Votes au total</div>
+            <div class="stat-number fs-1 fw-bold">{{ total_votes }}</div>
+            <div class="stat-label fs-4">Votes au total</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card stat-card text-center">
-            <div class="stat-number fs-5 fw-bold">{{ mean }}</div>
-            <div class="stat-label">Moyenne / sondage</div>
+            <div class="stat-number fs-1 fw-bold">{{ mean }}</div>
+            <div class="stat-label fs-4">Moyenne / sondage</div>
         </div>
     </div>
 </div>
 
 <div class="card mb-4">
-    <div class="card-body">
+    <div class="card-body fs-3 text-center">
         <p><strong>Dernière question :</strong> {{ last_question }}</p>
         <p><strong>Plus populaire :</strong> {{ most_popular }} ({{ most_popular.total_votes }} votes)</p>
         <p class="mb-0"><strong>Moins populaire :</strong> {{ least_popular }} ({{ least_popular.total_votes }} votes)</p>
@@ -39,6 +39,6 @@
 </div>
 
 <div class="d-flex justify-content-end">
-    <a href="{% url 'polls:index' %}" class="btn btn-outline-danger">Retour</a>
+    <a href="{% url 'polls:index' %}" class="btn btn-outline-danger fs-3">Retour</a>
 </div>
 {% endblock %}
