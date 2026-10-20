@@ -116,7 +116,7 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("polls:frequency", args=(question_id,)))
 
 # ========================================================================
-# Vue ajout de question: avec protection auth
+# Vue ajout de question : avec protection auth
 # ========================================================================
 #note: LoginRequiredMix doit etre en 1er dans l'héritage!!!!!!!!!!!!!!!
 class AddQuestionView(LoginRequiredMixin,FormView):
