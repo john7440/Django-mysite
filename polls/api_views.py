@@ -2,10 +2,11 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
-from rest_framework.permissions import  IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Question
+from .models import Question, Choice
 from .serializers import (QuestionPublicSerializer,QuestionDetailSerializer,QuestionCreateSerializer)
 
 
@@ -29,3 +30,19 @@ class QuestionListCreateAPIView(generics.ListCreateAPIView):
         question = serializer.save()
         return Response(QuestionDetailSerializer(question).data,status=status.HTTP_201_CREATED)
 
+#--------------------------
+class VoteAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, pk):
+        question = get_object_or_404(Question, pk=pk, pub_date__lte=timezone.now())
+        try:
+            choice_id = int(request.data.get('choice'))
+        except (TypeError, ValueError):
+            return Response({'detail': 'Champ requis'}, status=status.HTTP_400_BAD_REQUEST)
+
+        updated = Choice.objects.filter(pk=choice_id, question=question).update(votes=F('votes') +1)
+
+        if not updated:
+            return Response({'detail': 'Choix invalide pour ce sondage'},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'Vote enregistré!'})
