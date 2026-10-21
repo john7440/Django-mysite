@@ -23,4 +23,5 @@ urlpatterns = [
     path("polls/", include("polls.urls")),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('polls.api_urls')),
 ] + debug_toolbar_urls()
