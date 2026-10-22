@@ -5,7 +5,7 @@ import { Question } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class PollService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   list() {
     return this.http.get<Question[]>(`${API}/questions/`);
