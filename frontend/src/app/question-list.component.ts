@@ -38,6 +38,9 @@ import { Question } from './models';
     }
   `,
 })
+/**
+ * Component responsible for displaying the list of questions/polls and handling votes
+ */
 export class QuestionListComponent {
   private polls = inject(PollService);
   private auth = inject(AuthService);
@@ -47,6 +50,7 @@ export class QuestionListComponent {
   constructor() {
     effect(() => {
       this.auth.isLoggedIn();
+       // fetch questions without subscribing this effect to internal signals inside load()
       untracked(() => this.load());
     });
   }
@@ -61,6 +65,10 @@ export class QuestionListComponent {
     ok: boolean
   } | null>(null);
 
+  /**
+   * Submits a user vote for a specific question ID using the selected choice
+   * @param id - The id of the question
+   */
   vote(id: number) {
     this.polls.vote(id, this.selected[id]).subscribe({
       next: () => {
@@ -72,6 +80,9 @@ export class QuestionListComponent {
     });
   }
 
+  /**
+   * Helper for feedback
+   */
   private show(id: number, text: string, ok: boolean) {
     this.feedback.set({ id, text, ok });
     setTimeout(() => this.feedback.set(null), 3000);
