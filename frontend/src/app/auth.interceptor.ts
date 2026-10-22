@@ -3,6 +3,14 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
+/**
+ * Http Interceptor that automatically attaches an Authorization header
+ * with a JWT Bearer token
+ *
+ * @param req - The outgoing HttpRequest object to be inspected/modified
+ * @param next - The HttpHandlerFn used to pass the request to the next interceptor or backend
+ * @returns An Observable emiting the HTTP event stream
+ */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const token = auth.token();
