@@ -16,8 +16,8 @@ import { PollService } from './poll.service';
   `,
 })
 export class AddQuestionComponent {
-  private polls = inject(PollService);
-  private router = inject(Router);
+  private readonly polls = inject(PollService);
+  private readonly router = inject(Router);
   text = '';
   choicesText = '';
   error = signal('');

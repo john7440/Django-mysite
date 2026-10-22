@@ -42,8 +42,8 @@ import { Question } from './models';
  * Component responsible for displaying the list of questions/polls and handling votes
  */
 export class QuestionListComponent {
-  private polls = inject(PollService);
-  private auth = inject(AuthService);
+  private readonly polls = inject(PollService);
+  private readonly auth = inject(AuthService);
   questions = signal<Question[]>([]);
   selected: Record<number, number> = {};
 

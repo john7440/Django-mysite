@@ -8,7 +8,7 @@ import { API } from './api';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   token = signal<string | null>(localStorage.getItem('access'));
   isLoggedIn = computed(() => !!this.token());
 
