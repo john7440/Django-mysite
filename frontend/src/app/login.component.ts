@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
     </form>
   `,
 })
+/**
+ * Component responsible for managing the user login form and authentication
+ */
 export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
